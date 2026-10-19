@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LAB ELECTRONICA BASICA DE ARTEFACTOS</title>
+  <meta name="description" content="Laboratorio virtual interactivo de electrónica básica para estudiantes de educación básica primaria en Colombia.">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Carga de biblioteca CDN estática para Visor 3D y Realidad Aumentada -->
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+</head>
+<body>
+  <!-- ENCABEZADO Y NAVEGACIÓN -->
+  <header class="header">
+    <div class="header-container">
+      <div class="logo-title">
+        <svg class="protoboard-icon" viewBox="0 0 100 60" aria-hidden="true" role="img">
+          <!-- Protoboard base -->
+          <rect x="5" y="5" width="90" height="50" rx="4" fill="#fff0f3" stroke="#800f2f" stroke-width="2" />
+          <!-- Matrix holes -->
+          <circle cx="20" cy="18" r="2" fill="#800f2f" />
+          <circle cx="35" cy="18" r="2" fill="#800f2f" />
+          <circle cx="50" cy="18" r="2" fill="#800f2f" />
+          <circle cx="65" cy="18" r="2" fill="#800f2f" />
+          <circle cx="80" cy="18" r="2" fill="#800f2f" />
+          <circle cx="20" cy="42" r="2" fill="#800f2f" />
+          <circle cx="35" cy="42" r="2" fill="#800f2f" />
+          <circle cx="50" cy="42" r="2" fill="#800f2f" />
+          <circle cx="65" cy="42" r="2" fill="#800f2f" />
+          <circle cx="80" cy="42" r="2" fill="#800f2f" />
+          <!-- Buses de energía -->
+          <line x1="10" y1="28" x2="90" y2="28" stroke="#c9184a" stroke-width="2" stroke-dasharray="3,3" />
+          <line x1="10" y1="32" x2="90" y2="32" stroke="#590d22" stroke-width="2" stroke-dasharray="3,3" />
+          <!-- LEDs Encendidos -->
+          <!-- LED 1: Rojo -->
+          <path d="M 27,22 L 33,22 L 33,16 Q 30,10 27,16 Z" fill="#ff4d6d" />
+          <circle cx="30" cy="14" r="5" fill="#ff4d6d" />
+          <circle cx="30" cy="14" r="2" fill="#fff0f3" />
+          <!-- LED 2: Rosa resplandeciente -->
+          <path d="M 57,22 L 63,22 L 63,16 Q 60,10 57,16 Z" fill="#ff758f" />
+          <circle cx="60" cy="14" r="5" fill="#ff758f" />
+          <circle cx="60" cy="14" r="2" fill="#fff0f3" />
+        </svg>
+        <h1 class="main-title">LAB ELECTRONICA BASICA DE ARTEFACTOS</h1>
+      </div>
+      <nav class="nav-links">
+        <a href="#bienvenida">Inicio</a>
+        <a href="#visor-section">Visor 3D</a>
+        <a href="#catalogo">Componentes</a>
+          <a href="#actividad">Taller del LED</a>
+        <a href="#seguridad">Seguridad</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <!-- SECCIÓN DE BIENVENIDA -->
+    <section id="bienvenida" class="card welcome-card">
+      <h2>¡Bienvenidos al Lab Virtual de Electrónica! ⚡</h2>
+      <p>
+        Hola, explorador(a). En este laboratorio interactivo descubrirás los elementos mágicos que hacen funcionar los artefactos tecnológicos de nuestro entorno en Colombia: juguetes, linternas, radios y pequeños electrodomésticos.
+      </p>
+      <p>
+        Aprenderás a reconocer los componentes eléctricos básicos, comprenderás cómo fluye la corriente de bajo voltaje de forma segura y podrás interactuar con modelos 3D directamente desde tu computador o celular.
+      </p>
+      <div class="welcome-actions">
+        <a href="#visor-section" class="btn btn-primary">¡Empezar a Explorar en 3D!</a>
+        <a href="#seguridad" class="btn btn-outline">Leer Reglas de Seguridad 🛡️</a>
+      </div>
+    </section>
+
+    <!-- SECCIÓN DEL VISOR 3D, RA Y RV -->
+    <section id="visor-section" class="card viewer-card">
+      <div class="viewer-header">
+        <h2>Visor Interactivo 3D / RA / RV</h2>
+        <p class="instruction-text">
+          👆 <strong>Instrucciones:</strong> Usa un dedo o el mouse para rotar el modelo en 360°. Haz pellizco o usa la rueda del mouse para acercar y alejar.
+        </p>
+        <p class="instruction-text">
+          Los diez modelos GLB del catálogo vienen incluidos en esta página y se cargan al seleccionar cada componente; no necesitas importarlos.
+        </p>
+      </div>
+
+      <!-- Contenedor del Visor 3D -->
+      <div class="model-viewer-wrapper">
+        <model-viewer 
+          id="main-viewer" 
+          alt="Modelo 3D de componente de electrónica básica"
+          camera-controls 
+          auto-rotate 
+          shadow-intensity="1" 
+          ar 
+          ar-modes="webxr scene-viewer quick-look" 
+          ar-scale="auto"
+          loading="eager"
+          tabindex="0">
+          
+          <div slot="poster" class="viewer-poster">
+            <span class="spinner"></span>
+            <p>Cargando representación 3D...</p>
+          </div>
+        </model-viewer>
+
+        <!-- Etiqueta del modelo activo -->
+        <div class="model-info-badge" id="model-title-badge">
+          Componente activo: <span id="active-model-name">Protoboard (Tabla de Pruebas)</span>
+        </div>
+      </div>
+
+      <!-- Barra de herramientas y botones XR -->
+      <div class="xr-controls-bar">
+        <button id="btn-ar" class="btn btn-xr btn-ar" aria-label="Iniciar experiencia en realidad aumentada">
+          📱 Ver en RA
+        </button>
+        <button id="btn-vr" class="btn btn-xr btn-vr" aria-label="Consultar realidad virtual">
+          🥽 Ver en RV
+        </button>
+      </div>
+
+      <!-- Mensajes de estado e incompatibilidad -->
+      <div id="status-message" class="status-box hidden" role="status" aria-live="polite"></div>
+
+    </section>
+
+    <!-- CATÁLOGO DE COMPONENTES -->
+    <section id="catalogo" class="card catalog-card">
+      <h2>Catálogo de Componentes Electrónicos Básicos</h2>
+      <p>Selecciona cualquier tarjeta para ver el modelo 3D incluido y conocer la función del componente en artefactos cotidianos:</p>
+      
+      <div class="components-grid" id="components-grid">
+        <!-- Generado dinámicamente o estructurado semánticamente -->
+      </div>
+    </section>
+
+    <!-- TALLER INTERACTIVO DE CIRCUITO EN SERIE -->
+    <section id="actividad" class="card activity-card">
+      <h2>🧪 Taller interactivo: enciende un LED con seguridad</h2>
+      <p>
+        Construye un circuito en serie con una pila de 9 V, una resistencia de <strong>1 kΩ</strong>, un LED y un interruptor. Completa los pasos en orden y observa qué ocurre al cerrar el circuito.
+      </p>
+      <p class="workshop-safety-note"><strong>Importante:</strong> siempre usa la resistencia con el LED; nunca conectes el LED directamente a la pila ni uses un tomacorriente. La interacción de esta página es una simulación.
+      </p>
+
+      <div class="circuit-builder">
+        <div class="circuit-steps" aria-label="Pasos para montar el circuito">
+          <p class="steps-intro">Selecciona cada paso al terminarlo. El interruptor se habilita cuando el montaje esté completo.</p>
+          <button class="step-card active" type="button" data-step="1" aria-pressed="false">
+            <span class="step-number" aria-hidden="true">1</span>
+            <span class="step-copy">
+              <strong class="step-heading">Paso 1 · Fuente de energía</strong>
+              <span class="step-description">Identifica los polos positivo (+) y negativo (−) de la pila de 9 V.</span>
+            </span>
+          </button>
+          <button class="step-card" type="button" data-step="2" aria-pressed="false" disabled>
+            <span class="step-number" aria-hidden="true">2</span>
+            <span class="step-copy">
+              <strong class="step-heading">Paso 2 · Resistencia en serie</strong>
+              <span class="step-description">Conecta una resistencia de 1 kΩ entre el polo positivo y el LED; limita la corriente para protegerlo.</span>
+            </span>
+          </button>
+          <button class="step-card" type="button" data-step="3" aria-pressed="false" disabled>
+            <span class="step-number" aria-hidden="true">3</span>
+            <span class="step-copy">
+              <strong class="step-heading">Paso 3 · Orienta el LED</strong>
+              <span class="step-description">La pata larga (ánodo) va hacia el positivo; la pata corta (cátodo), hacia el interruptor y el negativo.</span>
+            </span>
+          </button>
+          <button class="step-card" type="button" data-step="4" aria-pressed="false" disabled>
+            <span class="step-number" aria-hidden="true">4</span>
+            <span class="step-copy">
+              <strong class="step-heading">Paso 4 · Cierra el recorrido</strong>
+              <span class="step-description">Conecta el interruptor en serie para completar el camino de regreso al polo negativo.</span>
+            </span>
+          </button>
+          <p id="circuit-progress" class="circuit-progress" role="status" aria-live="polite">0 de 4 pasos completados.</p>
+        </div>
+
+        <div class="circuit-simulation-box">
+          <h3>Recorrido del circuito en serie</h3>
+          <div class="canvas-circuit" id="circuit-canvas">
+            <div class="circuit-path" aria-label="Polo positivo de la pila, resistencia de 1 kiloohmio, LED, interruptor y polo negativo de la pila">
+              <div class="comp-slot battery-slot">🔋 + Pila 9 V</div>
+              <span class="wire" aria-hidden="true">→</span>
+              <div class="comp-slot resistor-slot">🛡️ Resistencia 1 kΩ</div>
+              <span class="wire" aria-hidden="true">→</span>
+              <div class="comp-slot led-slot" id="slot-led">💡 LED (Apagado)</div>
+              <span class="wire" aria-hidden="true">→</span>
+              <div class="comp-slot switch-slot" id="slot-switch">🔘 Interruptor (Abierto)</div>
+              <span class="wire" aria-hidden="true">→</span>
+              <div class="comp-slot battery-slot">🔋 − Pila</div>
+            </div>
+          </div>
+          <p class="circuit-explanation">El recorrido debe quedar cerrado: positivo → resistencia → LED → interruptor → negativo.</p>
+          
+          <div class="circuit-controls">
+            <button id="btn-toggle-switch" class="btn btn-primary" type="button" aria-pressed="false" disabled>
+              🔘 Clic para Cerrar Interruptor
+            </button>
+            <button id="btn-reset-circuit" class="btn btn-outline" type="button">
+              🔄 Reiniciar Taller
+            </button>
+          </div>
+
+          <div id="circuit-feedback" class="feedback-box" role="status" aria-live="polite">
+            Completa los cuatro pasos para habilitar el interruptor.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN DE SEGURIDAD -->
+    <section id="seguridad" class="card safety-card">
+      <div class="safety-banner">
+        <h2>🚨 Normas Fundamentales de Seguridad Eléctrica</h2>
+        <div class="safety-content">
+          <p class="highlight-text">
+            <strong>REGLA DE ORO PARA EL AULA Y EL HOGAR:</strong> Este laboratorio simula <strong>circuitos escolares de bajo voltaje</strong> (como los alimentados por pilas AA o baterías de 9V).
+          </p>
+          <ul class="safety-list">
+            <li>✅ <strong>Pilas y baterías de bajo voltaje:</strong> Usa únicamente materiales de bajo voltaje y realiza actividades físicas con supervisión adulta.</li>
+            <li>❌ <strong>NUNCA toques ni conectes nada al tomacorriente de la pared:</strong> La energía de la red doméstica (110V/220V) es muy peligrosa y puede causar graves accidentes.</li>
+            <li>👨‍🏫 <strong>Supervisión siempre:</strong> Realiza experimentos físicos reales únicamente con el acompañamiento de tu docente o un adulto responsable.</li>
+            <li>🧤 <strong>Manos secas:</strong> Asegúrate de tener siempre las manos secas y limpia la zona de trabajo antes de manipular componentes.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- PIE DE PÁGINA -->
+  <footer class="footer">
+    <div class="footer-container">
+      <p>
+        <strong>LAB ELECTRONICA BASICA DE ARTEFACTOS</strong> &copy; 2026 - Recurso Educativo Abierto para Educación Básica Primaria en Colombia.
+      </p>
+      <p class="footer-small">
+        Diseñado bajo la metodología de Situaciones de Aprendizaje y Orientaciones Curriculares de Tecnología e Informática (MEN Colombia).
+      </p>
+      <div class="attributions">
+        <p><strong>Modelos 3D:</strong> Los diez archivos GLB se integran desde los recursos suministrados para este proyecto. No se recibió información de autoría o licencia junto a los archivos; confirma esos datos antes de publicar o redistribuirlos.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
